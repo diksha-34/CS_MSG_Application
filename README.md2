@@ -8,12 +8,12 @@ CS_MsgApp is a messaging application built using React (with Vite for the fronte
 ## Project Overview
 
 ### Basic Features:
-- **Message Management**: Users can submit messages through the frontend, which are stored in the backend (MySQL database).
-- **Agent Handling**: Agents can manage customer messages by marking them as `in progress` or `closed`.
+- Message Management: Users can submit messages through the frontend, which are stored in the backend (MySQL database).
+- Agent Handling: Agents can manage customer messages by marking them as in progress or closed.
 
 ### Additional Features Implemented:
-- **WebSocket Real-Time Notifications**: WebSocket is implemented to ensure real-time message updates for agents. It prevents multiple agents from working on the same message simultaneously.
-- **Message State Handling**: Each message has states (`in progress`, `closed`), and agents can mark them accordingly. Only one agent can handle a message at a time.
+- WebSocket Real-Time Notifications: WebSocket is implemented to ensure real-time message updates for agents. It prevents multiple agents from working on the same message simultaneously.
+- Message State Handling: Each message has states (in progress, closed), and agents can mark them accordingly. Only one agent can handle a message at a time.
 
 ---
 
@@ -29,66 +29,58 @@ The following software must be installed on the local machine:
 
 ### Backend Setup (Spring Boot)
 
-1. **Clone the repository**:
-   
-bash
+1. Clone the repository:
+   bash
    git clone <your-private-repo-url>
-  
+   
 
-2. **Configure the MySQL Database**:
+2. Configure the MySQL Database:
    - Open MySQL and create a new database:
-     
-sql
+     sql
      CREATE DATABASE cs_message_app;
-    
-   - Update the `application.properties` file in `src/main/resources/` with your MySQL credentials:
      
-properties
+   - Update the application.properties file in src/main/resources/ with your MySQL credentials:
+     properties
      spring.datasource.url=jdbc:mysql://localhost:3306/cs_message_app
      spring.datasource.username=<your-username>
      spring.datasource.password=<your-password>
      spring.jpa.hibernate.ddl-auto=update
-    
+     
 
-3. **Install Backend Dependencies**:
-   Navigate to the root directory (where the `pom.xml` file is located) and run:
+3. Install Backend Dependencies:
+   Navigate to the root directory (where the pom.xml file is located) and run:
+   bash
+   mvn clean install
    
-bash
-Run the Backendl
-  
 
-4. **Run the Backend**:
+4. Run the Backend:
    Start the Spring Boot backend by running:
-   
-bash
+   bash
    mvn spring-boot:run
-  
-   The backend will be running at `http://localhost:8080`.
+   
+   The backend will be running at http://localhost:8080.
 
 ---
 
 ### Frontend Setup (React with Vite)
 
-1. **Navigate to the Frontend Directory**:
-   
-bash
+1. Navigate to the Frontend Directory:
+   bash
    cd frontend
-  
+   
 
-2. **Install Frontend Dependencies**:
+2. Install Frontend Dependencies:
    Install the required Node.js packages:
-   
-bash
+   bash
    npm install
-  
-
-3. **Start the Vite Development Server**:
-   Run the following command to start the development server:
    
-bash
+
+3. Start the Vite Development Server:
+   Run the following command to start the development server:
+   bash
    npm run dev
-  
-   The frontend will be running at `http://localhost:5173`.
+   
+   The frontend will be running at http://localhost:5173.
 
 ---
 
@@ -101,7 +93,8 @@ CREATE USER 'cs_app_user'@'localhost' IDENTIFIED BY 'yourpassword';
 GRANT ALL PRIVILEGES ON cs_message_app.* TO 'cs_app_user'@'localhost';
 FLUSH PRIVILEGES;
 
-Ensure your `application.properties` file is updated with the correct credentials.
+
+Ensure your application.properties file is updated with the correct credentials.
 
 ---
 
@@ -112,39 +105,45 @@ To start the backend:
 bash
 mvn spring-boot:run
 
+
 ### Frontend:
 To start the frontend:
 bash
 cd frontend
 npm run dev
-`
+
 
 Both services need to be running concurrently for full functionality.
 
 ---
 
-## DepSpring Web Backend (Spring BSpring Data JPAb**: For REST APIs
-- **SprinMySQL Connectoratabase operations
-- **MySpring Boot DevToolsQL connection
-- **Spring Boot DevTools*Lomboke reload during development
-- *WebSocket reduce boilerplate code
-- **WebHibernate real-time communication
-- **Hibernate**: For ORM withReact Frontend (React with Vite):
-- **React**: FrontendVite for building user interfaces
-- Axios Fast development builWebSocketios**: For HTTP requests
-- **WebSockeTailwind CSSme data communication
-- **Tailwind CSS**: For styling
+## Dependencies
 
----Real-time message updatesemented
+### Backend (Spring Boot):
+- Spring Web: For REST APIs
+- Spring Data JPA: For database operations
+- MySQL Connector: For MySQL connection
+- Spring Boot DevTools: For live reload during development
+- Lombok: To reduce boilerplate code
+- WebSocket: For real-time communication
+- Hibernate: For ORM with JPA
 
-- **Real-time message updates** using WebSocket to prevent multiple ageMessage state handlingme message.
-- **Message state handling** to ensure messages are marked as `in progress` or `closed`.
+### Frontend (React with Vite):
+- React: Frontend library for building user interfaces
+- Vite: Fast development build tool
+- Axios: For HTTP requests
+- WebSocket: For real-time data communication
+- Tailwind CSS: For styling
+
+---
+
+## Additional Features Implemented
+
+- Real-time message updates using WebSocket to prevent multiple agents from working on the same message.
+- Message state handling to ensure messages are marked as in progress or closed.
 
 ---
 
 ## Notes
-
 - Ensure that the MySQL server is up and running before starting the backend.
 - The frontend and backend need to be running simultaneously for the application to function correctly.
-`
-
