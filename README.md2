@@ -1,21 +1,33 @@
+
 # CS_MsgApp
 
-CS_MsgApp is a messaging application built with React (using Vite for development) and Spring Boot for the backend. It includes features for handling customer messages and ensures that no two agents work on the same message concurrently using WebSocket-based communication.
+CS_MsgApp is a messaging application built using React (with Vite for the frontend) and Spring Boot for the backend. It manages customer messages and ensures that no two agents work on the same message concurrently using WebSocket-based communication.
 
-## Requirements
+---
 
-Ensure that the following software is installed on your machine:
+## Project Overview
+
+### Basic Features:
+- **Message Management**: Users can submit messages through the frontend, which are stored in the backend (MySQL database).
+- **Agent Handling**: Agents can manage customer messages by marking them as `in progress` or `closed`.
+
+### Additional Features Implemented:
+- **WebSocket Real-Time Notifications**: WebSocket is implemented to ensure real-time message updates for agents. It prevents multiple agents from working on the same message simultaneously.
+- **Message State Handling**: Each message has states (`in progress`, `closed`), and agents can mark them accordingly. Only one agent can handle a message at a time.
+
+---
+
+## Setup and Run Instructions
+
+### Prerequisites
+The following software must be installed on the local machine:
 - Java 17 or later
 - Node.js 16.x or later
 - MySQL 8.x or later
 - Maven 3.x or later
 - Git (optional, for version control)
 
-## Setup Instructions
-
 ### Backend Setup (Spring Boot)
-
-The backend is built using Spring Boot and uses MySQL as the database.
 
 1. **Clone the repository**:
    
@@ -24,12 +36,12 @@ bash
   
 
 2. **Configure the MySQL Database**:
-   - Create a new MySQL database by running:
+   - Open MySQL and create a new database:
      
 sql
      CREATE DATABASE cs_message_app;
     
-   - Update the `application.properties` file located in `src/main/resources` with your MySQL credentials:
+   - Update the `application.properties` file in `src/main/resources/` with your MySQL credentials:
      
 properties
      spring.datasource.url=jdbc:mysql://localhost:3306/cs_message_app
@@ -39,22 +51,23 @@ properties
     
 
 3. **Install Backend Dependencies**:
-   Navigate to the root directory of the backend (where `pom.xml` is located) and run:
+   Navigate to the root directory (where the `pom.xml` file is located) and run:
    
 bash
-   mvn clean install
+Run the Backendl
   
 
-4. **Run the Spring Boot Application**:
+4. **Run the Backend**:
+   Start the Spring Boot backend by running:
    
 bash
    mvn spring-boot:run
   
-   The backend will be running on `http://localhost:8080`.
+   The backend will be running at `http://localhost:8080`.
+
+---
 
 ### Frontend Setup (React with Vite)
-
-The frontend is built using React, Tailwind CSS, and Vite as the development server.
 
 1. **Navigate to the Frontend Directory**:
    
@@ -63,77 +76,75 @@ bash
   
 
 2. **Install Frontend Dependencies**:
-   Run the following command to install the required libraries:
+   Install the required Node.js packages:
    
 bash
    npm install
   
 
 3. **Start the Vite Development Server**:
+   Run the following command to start the development server:
    
 bash
    npm run dev
   
-   The frontend will be running on `http://localhost:5173`.
+   The frontend will be running at `http://localhost:5173`.
 
-## Database Configuration
+---
 
-Ensure that MySQL is running locally and that the credentials in `application.properties` are correctly set.
+### MySQL Configuration
 
-If you haven't set up a MySQL user and database, you can use the following SQL commands:
+Make sure MySQL is installed and running on your machine. You can create the necessary database with the following SQL commands:
 sql
 CREATE DATABASE cs_message_app;
 CREATE USER 'cs_app_user'@'localhost' IDENTIFIED BY 'yourpassword';
 GRANT ALL PRIVILEGES ON cs_message_app.* TO 'cs_app_user'@'localhost';
 FLUSH PRIVILEGES;
 
-## Features
+Ensure your `application.properties` file is updated with the correct credentials.
 
-### Basic Functionality
-- Users can submit customer messages through the frontend.
-- Messages are stored in the MySQL database using Spring Boot and JPA.
-- Agents can handle customer messages by marking them as "in progress" or "closed."
+---
 
-### Additional Features
-- **Message State Handling**: 
-  - Messages can have different states (`open`, `in progress`, `closed`).
-  - Only one agent can handle a message at a time, ensuring no two agents work on the same message concurrently.
-  
-- **WebSockets for Real-Time Updates**:
-  - WebSockets are used to broadcast message updates to all connected agents. This ensures that message states are updated in real-time across all users.
+## Run Instructions
 
-## Commands for Running
-
-1. **Start the Backend**:
-   
+### Backend:
+To start the backend:
 bash
-   mvn spring-boot:run
-  
+mvn spring-boot:run
 
-2. **Start the Frontend**:
-   In a separate terminal window, navigate to the `frontend` folder and run:
-   
+### Frontend:
+To start the frontend:
 bash
-   npm run dev
-  
+cd frontend
+npm run dev
+`
+
+Both services need to be running concurrently for full functionality.
+
+---
+
+## DepSpring Web Backend (Spring BSpring Data JPAb**: For REST APIs
+- **SprinMySQL Connectoratabase operations
+- **MySpring Boot DevToolsQL connection
+- **Spring Boot DevTools*Lomboke reload during development
+- *WebSocket reduce boilerplate code
+- **WebHibernate real-time communication
+- **Hibernate**: For ORM withReact Frontend (React with Vite):
+- **React**: FrontendVite for building user interfaces
+- Axios Fast development builWebSocketios**: For HTTP requests
+- **WebSockeTailwind CSSme data communication
+- **Tailwind CSS**: For styling
+
+---Real-time message updatesemented
+
+- **Real-time message updates** using WebSocket to prevent multiple ageMessage state handlingme message.
+- **Message state handling** to ensure messages are marked as `in progress` or `closed`.
+
+---
 
 ## Notes
-- Ensure that MySQL is running before starting the backend.
-- Both the backend and frontend should be running for full functionality.
 
-## Dependencies
+- Ensure that the MySQL server is up and running before starting the backend.
+- The frontend and backend need to be running simultaneously for the application to function correctly.
+`
 
-### Backend
-- Spring Web
-- Spring Data JPA
-- Spring Boot DevTools
-- MySQL Connector
-- Lombok
-- WebSocket
-- Hibernate
-
-### Frontend
-- React
-- Axios
-- WebSocket
-- Tailwind CSS
