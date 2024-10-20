@@ -5,7 +5,6 @@ import com.example.CS_MsgApp.Repositories.MessageRepo;
 import com.example.CS_MsgApp.Repositories.ResponseRepo;
 import com.example.CS_MsgApp.Websockets.MessageWebSocketHandler;
 import com.sun.net.httpserver.HttpsServer;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ import java.util.Optional;
 public class controller {
 
     @Autowired
-    MessageRepo messageRepo ;
+    MessageRepo messageRepo;
     @Autowired
     MessageWebSocketHandler socketHandler;
 
@@ -34,101 +33,89 @@ public class controller {
     ResponseRepo responseRepo;
 
     @GetMapping("messages")
-    ResponseEntity<List<Message>> getMessages(){
+    ResponseEntity<List<Message>> getMessages() {
         List<Message> messages = messageRepo.findAllOpenMessages();
-        return  new ResponseEntity<>(messages, HttpStatus.OK);
+        return new ResponseEntity<>(messages, HttpStatus.OK);
     }
 
     @PutMapping("/updateState/{id}")
-    public ResponseEntity<Message> updateMessage(@PathVariable Long id,@RequestParam boolean handled,@RequestBody String response) throws IOException {
+    public ResponseEntity<Message> updateMessage(@PathVariable Long id, @RequestParam boolean handled,
+            @RequestBody String response) throws IOException {
         Optional<Message> opMsg = messageRepo.findById(id);
         if (opMsg.isPresent()) {
             Message msg = opMsg.get();
             if (handled) {
                 msg.setState("closed");
-                responseRepo.save(new Response(msg.getUserId(),response));
-            }
-            else {
+                responseRepo.save(new Response(msg.getUserId(), response));
+            } else {
                 msg.setState("in-progress");
             }
 
             messageRepo.save(msg);
-                        socketHandler.broadcast("Message Id: " + id + " state is updated ");
-        return new ResponseEntity<>(msg,HttpStatus.OK);
+            socketHandler.broadcast("Message Id: " + id + " state is updated ");
+            return new ResponseEntity<>(msg, HttpStatus.OK);
         } else {
             return null;
         }
     }
 
     @PostMapping("/agentLogin")
-    public ResponseEntity<String> adminLogin(@RequestParam String username, @RequestParam String password){
+    public ResponseEntity<String> adminLogin(@RequestParam String username, @RequestParam String password) {
 
         Agent agent = agentRepo.getAgentById(username);
 
-        if(agent != null && agent.getPassword().equals(password)){
-            return  new ResponseEntity<>("Login successful ", HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>("password does not matched",HttpStatus.CONFLICT);
+        if (agent != null && agent.getPassword().equals(password)) {
+            return new ResponseEntity<>("Login successful ", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("password does not matched", HttpStatus.CONFLICT);
         }
     }
 
     @GetMapping("/getAllResponses")
-    public ResponseEntity<List<String>> getAllResponses(@RequestParam String userId){
+    public ResponseEntity<List<String>> getAllResponses(@RequestParam String userId) {
 
         List<Response> responses = responseRepo.getAllResponses(userId);
         List<String> resp = new ArrayList<>();
-        for(Response response:responses){
+        for (Response response : responses) {
             resp.add(response.getResponse());
 
         }
-        return new ResponseEntity<>(resp,HttpStatus.OK);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-
 
     @PostMapping("/askQuestion")
-    public ResponseEntity<String> askQuestions(@RequestBody Message msg){
-        try{
+    public ResponseEntity<String> askQuestions(@RequestBody Message msg) {
+        try {
             messageRepo.save(msg);
-            return  new ResponseEntity<>("query submitted",HttpStatus.OK);
-        }
-        catch (Exception e){
+            return new ResponseEntity<>("query submitted", HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
-            return  new ResponseEntity<>("Error! ",HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Error! ", HttpStatus.CONFLICT);
 
         }
     }
-
 
     @PostMapping("/sendResponse")
-    public  ResponseEntity<String> sendResponse(@RequestBody Response response){
-        try{
+    public ResponseEntity<String> sendResponse(@RequestBody Response response) {
+        try {
             responseRepo.save(response);
-            return new ResponseEntity<>("Response sent",HttpStatus.OK);
-        }
-        catch (Exception e){
+            return new ResponseEntity<>("Response sent", HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Error! ",HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Error! ", HttpStatus.CONFLICT);
         }
     }
-
-
 
     @PostMapping("/addAgent")
-    public ResponseEntity<String> addAgent(@RequestBody Agent agent){
+    public ResponseEntity<String> addAgent(@RequestBody Agent agent) {
         try {
             agentRepo.save(agent);
-            return  new ResponseEntity<>("added ",HttpStatus.OK);
-        }
-        catch (Exception e){
+            return new ResponseEntity<>("added ", HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
-            return  new ResponseEntity<>("New agent not  Added: ", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("New agent not  Added: ", HttpStatus.CONFLICT);
         }
 
     }
-
-
-
-
 
 }
